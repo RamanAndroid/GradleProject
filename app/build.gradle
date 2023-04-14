@@ -1,3 +1,7 @@
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
+
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
@@ -42,6 +46,16 @@ android {
         }
     }
 
+    splits {
+        density {
+            enable true
+
+            exclude "ldpi", "xxhdpi", "xxxhdpi"
+
+            compatibleScreens 'small', 'normal', 'large', 'xlarge'
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -67,4 +81,24 @@ dependencies {
 
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
+}
+
+task productFlavor(type: Copy) { task ->
+    def sourceDir = file("${project.buildDir}/libs")
+
+    android.productFlavors.each { productFlavor ->
+        def extraFolder = file("${project.buildDir}/productFlavor/${productFlavor.name}")
+
+        if (!extraFolder.exists()) {
+            extraFolder.mkdirs()
+        }
+
+        sourceDir.listFiles().each { filePath ->
+            Files.copy(
+                    Paths.get(filePath.path),
+                    Paths.get("${extraFolder.path}/${filePath.getName()}"),
+                    StandardCopyOption.REPLACE_EXISTING
+            )
+        }
+    }
 }
