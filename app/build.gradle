@@ -9,8 +9,8 @@ plugins {
 }
 
 android {
-    compileSdkVersion 33
-    buildToolsVersion "33.0.0"
+    compileSdk 33
+    buildToolsVersion = "33.0.0"
 
     defaultConfig {
         applicationId "com.example.gradleproject"
@@ -34,7 +34,7 @@ android {
         }
     }
 
-    flavorDimensions "api"
+    flavorDimensions = ["api"]
 
     productFlavors {
         stg {
@@ -55,22 +55,23 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
+    namespace 'com.example.gradleproject'
 }
 
 dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.core:core-ktx:1.10.1'
     implementation libraries.core_ui
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     implementation "com.google.dagger:dagger:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
@@ -81,7 +82,7 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
 }
 
-task productFlavor(type: Copy) { task ->
+tasks.register('productFlavor', Copy) { task ->
     def sourceDir = file("${project.buildDir}/libs")
 
     android.productFlavors.each { productFlavor ->
