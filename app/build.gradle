@@ -5,17 +5,17 @@ import java.nio.file.StandardCopyOption
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'kotlin-kapt'
+    id 'com.google.devtools.ksp' version '1.8.21-1.0.11'
 }
 
 android {
-    compileSdk 33
-    buildToolsVersion = "33.0.0"
+    compileSdk 34
+    buildToolsVersion = "34.0.0"
 
     defaultConfig {
         applicationId "com.example.gradleproject"
         minSdkVersion 21
-        targetSdkVersion 33
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0"
 
@@ -46,11 +46,17 @@ android {
         }
     }
 
-    splits {
-        density {
-            enable true
+//    splits {
+//        density {
+//            enable true
+//
+//            exclude "ldpi", "xxhdpi", "xxxhdpi"
+//        }
+//    }
 
-            exclude "ldpi", "xxhdpi", "xxxhdpi"
+    bundle {
+        density {
+            enableSplit = true
         }
     }
 
@@ -67,24 +73,23 @@ android {
 dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.10.1'
+    implementation "androidx.core:core-ktx:$core_kotlin_version"
     implementation libraries.core_ui
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    testImplementation "junit:junit:$junit_version"
+    androidTestImplementation "androidx.test.ext:junit:$junit_ext_version"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espesso_version"
 
     implementation "com.google.dagger:dagger:$dagger_version"
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    ksp "com.google.dagger:dagger-compiler:$dagger_version"
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
     implementation "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
+    ksp "androidx.room:room-compiler:$room_version"
 }
 
 tasks.register('productFlavor', Copy) { task ->
-    def sourceDir = file("${project.buildDir}/libs")
-
+    def sourceDir = file("${project.projectDir}/libs")
     android.productFlavors.each { productFlavor ->
         def extraFolder = file("${project.buildDir}/productFlavor/${productFlavor.name}")
 

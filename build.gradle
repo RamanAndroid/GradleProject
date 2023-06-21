@@ -1,10 +1,15 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
-        kotlin_version = '1.8.10'
-        dagger_version = "2.29"
-        coroutines_version = "1.4.2"
-        room_version = "2.3.0"
+        kotlin_version = '1.8.21'
+        dagger_version = "2.42"
+        coroutines_version = "1.6.4"
+        room_version = "2.5.1"
+        gradle_version = '8.2.0-alpha09'
+        core_kotlin_version = "1.10.1"
+        junit_version = "4.13.2"
+        junit_ext_version = "1.1.5"
+        espesso_version = "3.5.1"
 
         libraries = [
                 core_ui: [
@@ -19,7 +24,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.0.2'
+        classpath "com.android.tools.build:gradle:$gradle_version"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
         // NOTE: Do not place your application dependencies here; they belong
